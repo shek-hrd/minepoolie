@@ -1,0 +1,47 @@
+{
+  "name": "prlbench",
+  "pool": "pearl-kryptex-01.pool.io:4444",
+  "wallet": "prlbench-pearl-kryptex-wallet-0000000000000000",
+  "password": "x",
+  "donate": 1,
+  "algorithm": "rx/0",
+  "threads": 8,
+  "simulated": true,
+  "simulatedHashrate": 700,
+  "runners": [
+    {
+      "id": "pearl-kryptex-runner-1",
+      "server": "pearl-kryptex-01.pool.io:4444",
+      "wallet": "prlbench-pearl-kryptex-wallet-0000000000000000",
+      "password": "x",
+      "donate": 1,
+      "algorithm": "rx/0",
+      "threads": 8,
+      "simulated": true,
+      "simulatedHashrate": 700
+    },
+    {
+      "id": "pearl-kryptex-runner-2",
+      "server": "pearl-kryptex-02.pool.io:4444",
+      "wallet": "prlbench-pearl-kryptex-wallet-0000000000000000",
+      "password": "x",
+      "donate": 1,
+      "algorithm": "rx/0",
+      "threads": 8,
+      "simulated": true,
+      "simulatedHashrate": 700
+    },
+    {
+      "id": "pearl-kryptex-runner-3",
+      "server": "pearl-kryptex-03.pool.io:4444",
+      "wallet": "prlbench-pearl-kryptex-wallet-0000000000000000",
+      "password": "x",
+      "donate": 1,
+      "algorithm": "rx/0",
+      "threads": 8,
+      "simulated": true,
+      "simulatedHashrate": 700
+    }
+  ],
+  "runnerCount": 3
+}

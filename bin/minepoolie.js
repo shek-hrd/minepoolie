@@ -7,7 +7,7 @@ const cmd = process.argv[2];
 const args = process.argv.slice(3);
 
 if (!cmd) {
-  console.log("Usage: minepoolie <build|test|dashboard|miner|runner|lint> [args]");
+  console.log("Usage: minepoolie <build|test|dashboard|miner|runner|troubleshoot|lint> [args]");
   process.exit(1);
 }
 

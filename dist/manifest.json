@@ -1,12 +1,16 @@
 {
   "name": "minepoolie",
   "version": "1.0.0",
-  "builtAt": "2026-10-30T05:02:01.554Z",
+  "builtAt": "2026-10-30T05:53:57.373Z",
   "node": "v24.22.1",
   "files": [
     "dashboard.js",
+    "deploy/runner-1/bin/runner.js",
+    "deploy/runner-1/package.json",
     "deployPackage.js",
+    "manifest.json",
     "miner.js",
-    "runner.js"
+    "runner.js",
+    "troubleshoot.js"
   ]
 }

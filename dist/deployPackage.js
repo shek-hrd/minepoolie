@@ -18,7 +18,7 @@ function generate({ runnerId, server = "donate.v2.xmrig.com:3333" }) {
   };
 
   const dir = path.join(process.cwd(), "dist", "deploy", runnerId);
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(path.join(dir, "bin"), { recursive: true });
   fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify(pkg, null, 2));
   fs.writeFileSync(
     path.join(dir, "bin", "runner.js"),
