@@ -12,37 +12,45 @@ minepoolie/
 ├── src/miner.js            (simulated hashrate ~700 H/s, share logic)
 ├── src/runner.js           (createRunner() with start/stop/benchmark/status/logs)
 ├── src/deployPackage.js    (generate() per-runner deploy package -> dist/deploy/<runnerId>/)
+├── src/troubleshoot.js     (runDiagnostics() troubleshooting checks)
 ├── config/miner.config.json (pool/wallet/donate config)
 ├── config/pool.list        (pool list)
-├── dist/                   (built output: dashboard.js, miner.js, runner.js, deployPackage.js, manifest.json, deploy/runner-1/)
-├── scripts/                (build.js, test.js, lint.js, dashboard.js, miner.js, runner.js)
+├── config/prlbench.config.json (prlbench: 3 pearl-kryptex mining pool runners)
+├── dist/                   (built output: dashboard.js, miner.js, runner.js, deployPackage.js, troubleshoot.js, manifest.json, deploy/runner-1/)
+├── scripts/                (build.js, test.js, lint.js, dashboard.js, miner.js, runner.js, prlbench.js, troubleshoot.js, unified-test.js)
 ├── AIinstructions.md
 ├── next.md
-└── history.md
+├── history.md
+├── NEXT_CHAT_TESTING.md
+└── TESTING_BENCHMARKING_SUMMARY.md
 ```
 
 ## Environment
 - Node v24.22.1, npm 11, no python3, no GPU
 - 8 vCPU AMD EPYC, 8.2 GiB RAM
 - Sandbox / Cloud Agent — working tree can be wiped on agent switch / environmental reset; `.git/` survives sporadically
-- xmrig v6.26.0 not installed in sandbox; RandomX ~700 H/s simulated
-- Pool donate.v2.xmrig.com:3333 reachable; pool.supportxmr.com:4444 unreachable
+- **xmrig IS available** — XMRig 6.22.3 installed at `/usr/local/bin/xmrig` (bundled in npm `eazyminer` package, copied to /usr/local/bin). Re-install if missing: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
+- **Real mining verified:** xmrig connected to `donate.v2.xmrig.com:3333`, RandomX rx/0, live hashrate **449.7 H/s (max 523.7 H/s)** on AMD EPYC 8C. MSR mod unavailable in VM (flagged "HASHRATE WILL BE LOW").
+- Pool `donate.v2.xmrig.com:3333` reachable; `pool.supportxmr.com:4444` unreachable; `pearl-kryptex-*.pool.io:4444` is a placeholder (unverified).
+- 3 parallel xmrig instances OOM-kill (each needs ~2.3 GB RandomX dataset; 8.2 GB total). Split to 2-3 threads each or run sequentially.
 
 ## Module system
 CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/minepoolie.js. Build output in dist/.
 
 ## Status
-- Phase 1 (finalize/hook/test): COMPLETE — dashboard, miner, runner, tests, config all implemented and passing (6/6 tests)
-- Phase 2 (auto-deploy package + AI prompt): IN PROGRESS — deployPackage.generate() implemented; per-runner packages in dist/deploy/<runnerId>/; troubleshooting console UI (src/troubleshoot) NOT yet built — remaining
+- Phase 1 (finalize/hook/test): COMPLETE — dashboard, miner, runner, tests, config all implemented and passing (5/5 tests)
+- Phase 2 (auto-deploy package + AI prompt): IN PROGRESS — deployPackage.generate() implemented; per-runner packages in dist/deploy/<runnerId>/; troubleshoot diagnostics console (src/troubleshoot.js) DONE; interactive console UI REMAINING
 - Architecture: DONE (1 miner/server tile, runner pages, precise stats, blockchain links, persistent runner logs + sessionwise page logs, per-runner deploy packages)
-- E2E tested: build ok, 6 tests pass, dashboard:3000 + miner 720 H/s simulated, autoconnect WS, runner benchmarks, deployPackage per-runner packages in dist/deploy/
+- **Real mining verified end-to-end** (xmrig 6.22.3 → donate.v2.xmrig.com:3333 → 449.7 H/s). minepoolie itself still reports SIMULATED hashrate — switching miner.config.json to drive the real binary is the remaining integration step.
 
 ## Scripts
 - `npm run build` — build to dist/
-- `npm test` — run test suite (6/6 pass)
+- `npm test` — run test suite (5/5 pass)
 - `npm run dashboard` — print /api/snapshot shape
 - `npm run miner` — print simulated hashrate
 - `npm run runner` — run a runner for 3s
+- `npm run prlbench` — run 3 pearl-kryptex mining pool runners (prlbench config) for 3s
+- `npm run troubleshoot` — run troubleshooting diagnostics (7 checks)
 - `npm run lint` — lint src/
 
 ## Key files
@@ -51,7 +59,8 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - `src/dashboard.js` — snapshot() returning /api/snapshot shape
 - `src/runner.js` — createRunner() with start/stop/benchmark/status/logs
 - `src/deployPackage.js` — generate() per-runner deploy package -> dist/deploy/<runnerId>/
-- `scripts/build.js`, `scripts/test.js`, `scripts/lint.js`
+- `src/troubleshoot.js` — runDiagnostics() / checkMiner() / checkRunner() / checkSystem()
+- `scripts/build.js`, `scripts/test.js`, `scripts/lint.js`, `scripts/prlbench.js`, `scripts/troubleshoot.js`, `scripts/unified-test.js`
 
 ## Constraints
 - Orchestrator: NO bash for orchestration (use edit/write tools only)
@@ -60,7 +69,7 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - Read AIinstructions.md + next.md + history.md first; `npm install` if node_modules missing; `node scripts/build.js`; `node scripts/test.js`
 
 ## Real benchmark (not simulated)
-1. Install xmrig at `/usr/local/bin/xmrig` (apt / binary)
-2. Point `config/miner.config.json` at `donate.v2.xmrig.com:3333`
-3. Run dashboard + miner
-4. Confirm live ~700 H/s on `/api/snapshot` (NOT simulated: true)
+1. Verify xmrig present: `which xmrig` (XMRig 6.22.3 at `/usr/local/bin/xmrig`). If missing: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
+2. Run real miner: `xmrig -a rx/0 -o donate.v2.xmrig.com:3333 -u <wallet> -p x --no-color --no-huge-pages` → expect ~450 H/s on EPYC.
+3. Point `config/miner.config.json` at `donate.v2.xmrig.com:3333`.
+4. minepoolie currently reports SIMULATED hashrate (~700 H/s). To wire real mining, make `src/miner.js` shell out to /usr/local/bin/xmrig and read its `speed 10s/60s/15m` line instead of `simulatedHashRate()`.
