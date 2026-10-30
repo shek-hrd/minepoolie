@@ -17,7 +17,7 @@ minepoolie/
 ├── config/pool.list        (pool list)
 ├── config/prlbench.config.json (prlbench: 3 pearl-kryptex mining pool runners)
 ├── dist/                   (built output: dashboard.js, miner.js, runner.js, deployPackage.js, troubleshoot.js, manifest.json, deploy/runner-1/)
-├── scripts/                (build.js, test.js, lint.js, dashboard.js, miner.js, runner.js, prlbench.js, troubleshoot.js, unified-test.js)
+├── scripts/                (build.js, test.js, lint.js, dashboard.js, miner.js, runner.js, prlbench.js, troubleshoot.js, unified-test.js, install-xmrig.sh)
 ├── AIinstructions.md
 ├── next.md
 ├── history.md
@@ -29,8 +29,8 @@ minepoolie/
 - Node v24.22.1, npm 11, no python3, no GPU
 - 8 vCPU AMD EPYC, 8.2 GiB RAM
 - Sandbox / Cloud Agent — working tree can be wiped on agent switch / environmental reset; `.git/` survives sporadically
-- **xmrig IS available** — XMRig 6.22.3 installed at `/usr/local/bin/xmrig` (bundled in npm `eazyminer` package, copied to /usr/local/bin). Re-install if missing: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
-- **Real mining verified:** xmrig connected to `donate.v2.xmrig.com:3333`, RandomX rx/0, live hashrate **449.7 H/s (max 523.7 H/s)** on AMD EPYC 8C. MSR mod unavailable in VM (flagged "HASHRATE WILL BE LOW").
+- **xmrig IS available** — XMRig 6.22.3 installed at `/usr/local/bin/xmrig` (bundled in npm `eazyminer` package, copied to /usr/local/bin). If missing after a wipe, run `bash scripts/install-xmrig.sh` (committed in-repo, survives wipes). Verified live: ~410-450 H/s on EPYC (this session: 410.5 H/s; previous session: 449.7 H/s).
+- **Real mining verified:** xmrig connected to `donate.v2.xmrig.com:3333`, RandomX rx/0, live hashrate **~410-450 H/s** on AMD EPYC 8C (MSR mod unavailable in VM, flagged "HASHRATE WILL BE LOW").
 - Pool `donate.v2.xmrig.com:3333` reachable; `pool.supportxmr.com:4444` unreachable; `pearl-kryptex-*.pool.io:4444` is a placeholder (unverified).
 - 3 parallel xmrig instances OOM-kill (each needs ~2.3 GB RandomX dataset; 8.2 GB total). Split to 2-3 threads each or run sequentially.
 
@@ -52,6 +52,7 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - `npm run prlbench` — run 3 pearl-kryptex mining pool runners (prlbench config) for 3s
 - `npm run troubleshoot` — run troubleshooting diagnostics (7 checks)
 - `npm run lint` — lint src/
+- `bash scripts/install-xmrig.sh` — reinstall xmrig after a wipe (survives wipes, committed in-repo)
 
 ## Key files
 - `config/miner.config.json` — pool/wallet/donate config
@@ -60,7 +61,7 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - `src/runner.js` — createRunner() with start/stop/benchmark/status/logs
 - `src/deployPackage.js` — generate() per-runner deploy package -> dist/deploy/<runnerId>/
 - `src/troubleshoot.js` — runDiagnostics() / checkMiner() / checkRunner() / checkSystem()
-- `scripts/build.js`, `scripts/test.js`, `scripts/lint.js`, `scripts/prlbench.js`, `scripts/troubleshoot.js`, `scripts/unified-test.js`
+- `scripts/build.js`, `scripts/test.js`, `scripts/lint.js`, `scripts/prlbench.js`, `scripts/troubleshoot.js`, `scripts/unified-test.js`, `scripts/install-xmrig.sh`
 
 ## Constraints
 - Orchestrator: NO bash for orchestration (use edit/write tools only)
@@ -69,7 +70,7 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - Read AIinstructions.md + next.md + history.md first; `npm install` if node_modules missing; `node scripts/build.js`; `node scripts/test.js`
 
 ## Real benchmark (not simulated)
-1. Verify xmrig present: `which xmrig` (XMRig 6.22.3 at `/usr/local/bin/xmrig`). If missing: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
-2. Run real miner: `xmrig -a rx/0 -o donate.v2.xmrig.com:3333 -u <wallet> -p x --no-color --no-huge-pages` → expect ~450 H/s on EPYC.
+1. Run `npm run install-xmrig` (or `bash scripts/install-xmrig.sh`) — installs xmrig 6.22.3 at `/usr/local/bin/xmrig` if missing. Survives wipes because committed in-repo.
+2. Run real miner: `xmrig -a rx/0 -o donate.v2.xmrig.com:3333 -u <wallet> -p x --no-color --no-huge-pages` → expect ~410-450 H/s on EPYC.
 3. Point `config/miner.config.json` at `donate.v2.xmrig.com:3333`.
 4. minepoolie currently reports SIMULATED hashrate (~700 H/s). To wire real mining, make `src/miner.js` shell out to /usr/local/bin/xmrig and read its `speed 10s/60s/15m` line instead of `simulatedHashRate()`.

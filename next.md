@@ -10,7 +10,7 @@
 3. `node scripts/build.js` to verify typecheck/build.
 4. `node scripts/test.js` to verify tests pass (expect 5/5).
 5. `node scripts/unified-test.js` to run the full e2e suite (build → unit → troubleshoot → prlbench → e2e snapshot). Expect 5/5.
-6. Verify xmrig present (`which xmrig` → XMRig 6.22.3 at `/usr/local/bin/xmrig`). If missing, reinstall: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
+6. Verify xmrig present (`which xmrig` → XMRig 6.22.3 at `/usr/local/bin/xmrig`). If missing, run `npm run install-xmrig` (or `bash scripts/install-xmrig.sh`) — committed in-repo, survives wipes.
 7. Real benchmark: `xmrig -a rx/0 -o donate.v2.xmrig.com:3333 -u <wallet> -p x --no-color --no-huge-pages` → expect live ~450 H/s on EPYC (MSR mod unavailable in VM, so hashrate is capped low).
 8. Phase2 remaining: wire `src/miner.js` to drive the real xmrig binary instead of `simulatedHashRate()`; build the troubleshooting console UI; blockchain transfer validation + direct links; multiple autoconnecting mining servers (1 miner per server) each on a tile.
 9. DO NOT switch agents (wipes `/workspace/app` working tree).
@@ -51,10 +51,10 @@
 
 ## Environment notes
 - Sandbox/Cloud Agent; Node v24.22.1, npm 11; no python3; 8 vCPU; 8.2 GiB; no GPU
-- **xmrig v6.22.3 installed at /usr/local/bin/xmrig** (via npm `eazyminer` package); RandomX live ~450 H/s on EPYC (MSR mod unavailable in VM → hashrate capped low)
+- **xmrig v6.22.3 installed at /usr/local/bin/xmrig** (via npm `eazyminer` package); RandomX live ~410-450 H/s on EPYC (MSR mod unavailable in VM → hashrate capped low). If missing after a wipe, run `npm run install-xmrig` (committed in-repo).
 - donate.v2.xmrig.com:3333 reachable; pool.supportxmr.com:4444 unreachable; pearl-kryptex-*.pool.io:4444 placeholder
 - 3 parallel xmrig instances OOM-kill (2.3 GB dataset each); use 2-3 threads each or sequential runs
-- Workspace wipe risk on agent switch — `.git/` survives sporadically
+- Workspace wipe risk on agent switch — `.git/` survives sporadically; install-xmrig.sh is committed to survive wipes
 
 ## Do NOT
 - Switch agents (wipes /workspace/app working tree)
