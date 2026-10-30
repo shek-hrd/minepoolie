@@ -13,7 +13,8 @@
     "dashboard": "node scripts/dashboard.js",
     "miner": "node scripts/miner.js",
     "runner": "node scripts/runner.js",
-    "lint": "node scripts/lint.js"
+    "lint": "node scripts/lint.js",
+    "prlbench": "node scripts/prlbench.js"
   },
   "engines": {
     "node": ">=24.0.0"

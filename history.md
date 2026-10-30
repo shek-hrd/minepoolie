@@ -85,7 +85,9 @@ Chronological log of the minepoolie v1.0.0 session. Approximate timestamps based
 
 ---
 
-## Continuation notes (new chat)
+## ~2026-10-30T05:22+ — prlbench fork: 3 pearl-kryptex mining pool runners
+**Action:** Created branch `prlbench` from `main`. Added `config/prlbench.config.json` with 3 pearl-kryptex runner entries (pearl-kryptex-runner-1/2/3 on pearl-kryptex-01/02/03.pool.io:4444), `scripts/prlbench.js` entry point that starts all 3 runner instances via `createRunner()`, and `npm run prlbench` script. Updated AIinstructions.md, next.md, history.md.
+**Result:** prlbench branch created with the new prlbench fork.
 
 To smoothly continue in a new chat:
 

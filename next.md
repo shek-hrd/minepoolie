@@ -15,6 +15,7 @@
 - multiple page instances managing/benchmarking live runners
 - precise statistics + validate each transfer generating blockchain direct link
 - runner logs persistent + page sessionwise logs
+- prlbench fork: config/prlbench.config.json + scripts/prlbench.js — 3 pearl-kryptex mining pool runners (runner-1/2/3) on pearl-kryptex-01/02/03.pool.io:4444 DONE
 
 ## Remaining work
 1. Build troubleshooting console UI (src/troubleshoot not yet built)
