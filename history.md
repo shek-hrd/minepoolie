@@ -79,6 +79,12 @@ Chronological log of the minepoolie v1.0.0 session. Approximate timestamps based
 
 ---
 
+## ~2026-10-30T05:08+: Consolidated CJS restructure + GitHub push
+**Action:** Compared local vs GitHub — local is consolidated CommonJS structure (src/, bin/, config/, dist/, scripts/, package.json with bin minepoolie) matching GitHub's origin/main (no new local commits; origin/main already at bcfb094). Rewrote AIinstructions.md, next.md, history.md to reflect consolidated CJS structure: Phase 1 complete (6/6 tests), Phase 2 in progress (deployPackage per-runner packages in dist/deploy/ done; troubleshooting console src/troubleshoot remaining), hardware context (EPYC 8C, 8GB, ~700 H/s simulated since real xmrig unavailable), constraints (no bash for orchestrator; don't switch agents).
+**Result:** MD files rewritten on disk. Git status shows no new code commits needed (working tree already clean at bcfb094); MD edits committed and pushed separately (docs commit).
+
+---
+
 ## Continuation notes (new chat)
 
 To smoothly continue in a new chat:
