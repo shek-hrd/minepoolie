@@ -1,0 +1,10 @@
+{
+  "pool": "donate.v2.xmrig.com:3333",
+  "wallet": "47hYbPjvW4t9w8qK2nL5mR6zB8xC1vE3aS9dF0gH7jK2pL4mN6qR8tU0wX2yZ4aB6cD8eF0gH2jK4lM6nO8pQ0rS2tU4vW6xY8z",
+  "password": "x",
+  "donate": 1,
+  "algorithm": "rx/0",
+  "threads": 8,
+  "simulated": true,
+  "simulatedHashrate": 700
+}

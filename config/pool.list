@@ -1,0 +1,7 @@
+# Minepoolie v1.0.0 config
+
+Pool: donate.v2.xmrig.com:3333 (reachable)
+Unreachable: pool.supportxmr.com:4444
+Algorithm: RandomX (rx/0)
+Threads: 8
+Simulated hashrate: ~700 H/s

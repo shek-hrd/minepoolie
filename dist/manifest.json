@@ -1,0 +1,12 @@
+{
+  "name": "minepoolie",
+  "version": "1.0.0",
+  "builtAt": "2026-10-30T05:02:01.554Z",
+  "node": "v24.22.1",
+  "files": [
+    "dashboard.js",
+    "deployPackage.js",
+    "miner.js",
+    "runner.js"
+  ]
+}

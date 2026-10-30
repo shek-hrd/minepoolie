@@ -1,0 +1,22 @@
+{
+  "name": "minepoolie",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minepoolie — autonomous Monero mining dashboard, miner, runner, and test suite",
+  "main": "scripts/build.js",
+  "bin": {
+    "minepoolie": "bin/minepoolie.js"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
+    "dashboard": "node scripts/dashboard.js",
+    "miner": "node scripts/miner.js",
+    "runner": "node scripts/runner.js",
+    "lint": "node scripts/lint.js"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "devDependencies": {}
+}

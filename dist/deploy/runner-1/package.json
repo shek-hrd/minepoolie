@@ -1,0 +1,12 @@
+{
+  "runnerId": "runner-1",
+  "server": "donate.v2.xmrig.com:3333",
+  "generatedAt": "2026-10-30T05:02:06.407Z",
+  "version": "1.0.0",
+  "files": [
+    "bin/runner.js",
+    "config/miner.config.json",
+    "README.md"
+  ],
+  "entry": "bin/runner.js"
+}
