@@ -14,7 +14,8 @@
     "miner": "node scripts/miner.js",
     "runner": "node scripts/runner.js",
     "troubleshoot": "node scripts/troubleshoot.js",
-    "lint": "node scripts/lint.js"
+    "lint": "node scripts/lint.js",
+    "install-xmrig": "bash scripts/install-xmrig.sh"
   },
   "engines": {
     "node": ">=24.0.0"
