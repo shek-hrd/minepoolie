@@ -14,7 +14,6 @@ minepoolie/
 ├── src/deployPackage.js    (generate() per-runner deploy package -> dist/deploy/<runnerId>/)
 ├── config/miner.config.json (pool/wallet/donate config)
 ├── config/pool.list        (pool list)
-├── config/prlbench.config.json (prlbench: 3 pearl-kryptex mining pool runners)
 ├── dist/                   (built output: dashboard.js, miner.js, runner.js, deployPackage.js, manifest.json, deploy/runner-1/)
 ├── scripts/                (build.js, test.js, lint.js, dashboard.js, miner.js, runner.js)
 ├── AIinstructions.md
@@ -44,7 +43,6 @@ CommonJS (require/module.exports), NOT ESM packages/ monorepo. Entry point: bin/
 - `npm run dashboard` — print /api/snapshot shape
 - `npm run miner` — print simulated hashrate
 - `npm run runner` — run a runner for 3s
-- `npm run prlbench` — run 3 pearl-kryptex mining pool runners (prlbench config) for 3s
 - `npm run lint` — lint src/
 
 ## Key files
