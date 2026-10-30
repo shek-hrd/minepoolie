@@ -1,6 +1,6 @@
 # history.md — minepoolie conversation log
 
-Chronological log of the minepoolie v1.0.0 session. Approximate timestamps based on message times (~2026-10-29T19:37 → 2026-10-30T05:00). Environment: sandbox/Cloud Agent, Node v24.22.1, npm 11, no python3, 8 vCPU AMD EPYC, 8.2 GiB RAM, no GPU.
+Chronological log of the minepoolie v1.0.0 session. Approximate timestamps based on message times (~2026-10-29T19:37 → 2026-10-30T06:32). Environment: sandbox/Cloud Agent, Node v24.22.1, npm 11, no python3, 8 vCPU AMD EPYC, 8.2 GiB RAM, no GPU.
 
 ---
 
@@ -85,6 +85,17 @@ Chronological log of the minepoolie v1.0.0 session. Approximate timestamps based
 
 ---
 
+## ~2026-10-30T06:05 — Nemotron session: fork survey + real mining verification
+**Action:** Surveyed all 4 branches: main (e8f10f8), prlbench (0c34252), allchanges (38c5fa5), unified (e40a472). Verified every branch builds and passes unit tests (5/5). Verified prlbench 3-runner feature, troubleshoot diagnostics (7 checks, 0 failed), and unified-test.js e2e suite (5/5: build → unit → troubleshoot → prlbench → e2e snapshot).
+
+**KEY ACHIEVEMENT — real mining verified:** xmrig was NOT in the sandbox. Found a real XMRig 6.22.3 binary bundled inside the npm `eazyminer` package at /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig, copied it to /usr/local/bin/xmrig. Real mining then verified end-to-end against donate.v2.xmrig.com:3333: RandomX rx/0, dataset ready ~12s, live hashrate **449.7 H/s (max 523.7 H/s)** on AMD EPYC 8C. MSR mod unavailable in VM (flagged "HASHRATE WILL BE LOW"). 3 parallel xmrig instances OOM-kill (each needs ~2.3GB; 8.2GB total); sequential runs and 2-3 thread splits work.
+
+**Action:** Wrote per-fork reports: report-main.md, report-prlbench.md, report-allchanges.md, report-unified.md. Wrote TESTING_BENCHMARKING_SUMMARY.md. Updated AIinstructions.md and next.md to reflect xmrig availability and real mining results (449.7 H/s live, not simulated).
+
+**Result:** All branches build/test pass; real mining confirmed at 449.7 H/s; docs updated; reports written.
+
+---
+
 ## Continuation notes (new chat)
 
 To smoothly continue in a new chat:
@@ -93,6 +104,10 @@ To smoothly continue in a new chat:
 2. `npm install` if `node_modules` missing.
 3. `node scripts/build.js` to verify build.
 4. `node scripts/test.js` to verify tests (expect 5/5 pass).
-5. Real benchmark: install xmrig at `/usr/local/bin/xmrig` (apt/install binary), point `config/miner.config.json` at `donate.v2.xmrig.com:3333`, run dashboard + miner, confirm live ~700 H/s on `/api/snapshot` (NOT simulated).
-6. Phase 2 remaining: one-file autonomous deploy package, separate package per runner, troubleshooting console UI.
-7. Do NOT switch agents (wipes workspace); keep context lean; prefer `edit` over giant `write`.
+5. `node scripts/unified-test.js` to run full e2e suite (expect 5/5).
+6. Verify xmrig present (`which xmrig` → XMRig 6.22.3 at `/usr/local/bin/xmrig`). If missing: `npm install -g eazyminer && cp /usr/local/lib/node_modules/eazyminer/assets/miners/xmrig/xmrig /usr/local/bin/xmrig`.
+7. Real benchmark: `xmrig -a rx/0 -o donate.v2.xmrig.com:3333 -u <wallet> -p x --no-color --no-huge-pages` → expect live ~450 H/s on EPYC (MSR mod unavailable in VM, so hashrate is capped low).
+8. Phase 2 remaining: wire `src/miner.js` to drive real xmrig instead of `simulatedHashRate()`; build troubleshooting console UI; blockchain transfer validation + direct links; multiple autoconnecting mining servers.
+9. Do NOT switch agents (wipes workspace); keep context lean; prefer `edit` over giant `write`.
+10. Commit AND push after EVERY file edit/creation (never let uncommitted work accumulate).
+11. If wiped: regenerate missing files from `AIinstructions.md` + `next.md`, `npm install`, resume at next.md step list.
